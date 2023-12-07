@@ -1,5 +1,6 @@
 <a target="_blank" href="https://replit.com/github/prismarinenetwork/chilibowlflash"><img alt="Run on Replit" src="buttons/remade/replit.svg"></a>
 <a target="_blank" href="https://app.cyclic.sh/api/app/deploy/prismarinenetwork/chilibowlflash"><img alt="Deploy to Cyclic" src="buttons/remade/cyclic.svg"></a>
+<a target="_blank" href="https://heroku.com/deploy/?template=https://github.com/prismarinenetwork/chilibowlflash"><img alt="Deploy to Heroku" src="buttons/official/heroku.svg"></a>
 Flash Games running off of ruffle, on their very own webpage. Making it easy to embed right onto your website! May take a smidge to load. 
 
 This is different than the Â¨packÂ¨ as this version is just each game on its own page, which makes it better for embeds.  Also, yeah I know it looks straight out of the late 90's but whatever. If the link attached is down, then I'm most likely updating it. 
