@@ -17,6 +17,8 @@
             font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            margin: 0; /* Ensures no default body margin causes gaps */
+            padding: 0;
         }
 
         /* Custom text shadow for desktop icon labels */
@@ -30,6 +32,26 @@
             background-size: cover;
             background-position: center;
         }
+        
+        /* Style the container for the icons so absolute positioning works */
+        #desktop-icons {
+             /* Set to full size to define the absolute positioning context */
+             width: 100%;
+             height: 100%;
+             /* Remove flex properties since we are manually positioning icons */
+             display: block; 
+        }
+
+        /* Desktop Icon Base Style */
+        .desktop-icon {
+            /* Start position is relative so we can calculate the initial absolute position on drag */
+            position: relative;
+            z-index: 10;
+            user-select: none;
+            cursor: pointer;
+            /* Flex properties from previous version for internal alignment */
+            @apply flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 group;
+        }
 
         /* Styling for app windows */
         .app-window {
@@ -40,6 +62,9 @@
             /* Enable resizing */
             resize: both;
             overflow: hidden; /* This is key for resize to work with flex */
+            /* Add backdrop blur for modern feel */
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         /* Style for the title bar used as a drag handle */
@@ -48,13 +73,15 @@
             user-select: none; /* Prevent text selection while dragging */
         }
         
-        /* Maximized window state */
+        /* Maximized window state - FIX APPLIED HERE */
         .app-window.maximized {
-            width: 100% !important;
-            height: calc(100% - 3.5rem) !important; /* Full height minus taskbar */
+            /* Use viewport units (vw/vh) for reliable full screen sizing */
+            width: 100vw !important;
+            height: calc(100vh - 3.5rem) !important; /* Full height minus 3.5rem taskbar */
             top: 0 !important;
             left: 0 !important;
-            transform: none !important;
+            margin: 0 !important; /* Important to remove any residual margin */
+            transform: none !important; /* Remove the centering transform */
             resize: none;
         }
 
@@ -84,33 +111,47 @@
     <div id="desktop" class="w-full h-full relative">
 
         <!-- 1a. Desktop Icons -->
-        <!-- Added relative z-10 here to make icons clickable above the window container -->
-        <div id="desktop-icons" class="relative z-10 p-4 flex flex-col flex-wrap h-full content-start gap-2">
+        <!-- Icons are now manually positioned and draggable -->
+        <div id="desktop-icons" class="relative">
             
             <!-- MS Word Icon -->
-            <div ondblclick="openApp('word')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+            <div id="icon-word" ondblclick="openApp('word')" class="desktop-icon top-4 left-4">
                 <!-- Updated icon URL -->
-                <img src="https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg" alt="Word Icon" class="w-12 h-12">
+                <img src="https://cdn.worldvectorlogo.com/logos/word-1.svg" alt="Word Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Word</span>
             </div>
             
             <!-- Retro 98 Icon (Replaces Paint) -->
-            <div ondblclick="openApp('retro98')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+            <div id="icon-retro" ondblclick="openApp('retro')" class="desktop-icon top-[110px] left-4">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" alt="Retro 98 Icon" class="w-12 h-12">
-                <span class="text-white text-xs text-center mt-1 icon-label">Retro 98</span>
+                <span class="text-white text-xs text-center mt-1 icon-label">Retro</span>
             </div>
 
             <!-- Calculator Icon -->
-            <div ondblclick="openApp('calculator')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+            <div id="icon-calculator" ondblclick="openApp('calculator')" class="desktop-icon top-[216px] left-4">
                 <!-- Updated icon URL -->
                 <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" alt="Calculator Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Calculator</span>
             </div>
 
             <!-- Chrome Icon -->
-            <div ondblclick="openApp('chrome')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+            <div id="icon-chrome" ondblclick="openApp('chrome')" class="desktop-icon top-[322px] left-4">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" alt="Chrome Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Chrome</span>
+            </div>
+
+            <!-- JS Runner Icon (NEW) -->
+            <div id="icon-jsrunner" ondblclick="openApp('jsrunner')" class="desktop-icon top-[428px] left-4">
+                <!-- Inline SVG for the code icon -->
+                <svg class="w-12 h-12 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                <span class="text-white text-xs text-center mt-1 icon-label">JS Runner</span>
+            </div>
+            
+             <!-- HTML Editor Icon (NEW) -->
+            <div id="icon-htmlrunner" ondblclick="openApp('htmlrunner')" class="desktop-icon top-4 left-[116px]">
+                <!-- Inline SVG for the HTML icon (</>) -->
+                <svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 8h-4m-4 0h4m-4 4h4m-4 0h4" opacity="0.5"></path></svg>
+                <span class="text-white text-xs text-center mt-1 icon-label">HTML Editor</span>
             </div>
         </div>
 
@@ -132,7 +173,7 @@
             <!-- Start Button -->
             <button onclick="toggleStartMenu()" class="w-10 h-10 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors">
                 <!-- Updated icon URL -->
-                <img src="https://cdn.worldvectorlogo.com/logos/windows-11.svg" alt="Start" class="w-6 h-6">
+                <img src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg" alt="Start" class="w-6 h-6">
             </button>
             
             <!-- Container for running apps -->
@@ -163,34 +204,43 @@
         <div class="grid grid-cols-6 gap-4">
             <!-- Word -->
             <div onclick="openApp('word'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <!-- Updated icon URL -->
                 <img src="https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Word</span>
             </div>
-            <!-- Retro 98 (Replaces Paint) -->
-            <div onclick="openApp('retro98'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+            
+            <!-- Retro -->
+            <div onclick="openApp('retro'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" class="w-12 h-12">
-                <span class="text-xs mt-1">Retro 98</span>
+                <span class="text-xs mt-1">Retro</span>
             </div>
+            
             <!-- Calculator -->
             <div onclick="openApp('calculator'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <!-- Updated icon URL -->
-                <!-- Fixed typo in src -->
                 <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Calculator</span>
             </div>
+
             <!-- Chrome -->
             <div onclick="openApp('chrome'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <!-- Fixed typo in URL -->
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Chrome</span>
             </div>
+
+            <!-- JS Runner (NEW) -->
+            <div onclick="openApp('jsrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <!-- Inline SVG is rendered as an image source in the taskbar/start menu -->
+                <svg class="w-12 h-12 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                <span class="text-xs mt-1">JS Runner</span>
+            </div>
+            
+            <!-- HTML Editor (NEW) -->
+            <div onclick="openApp('htmlrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <!-- Inline SVG for the HTML icon (</>) -->
+                <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                <span class="text-xs mt-1">HTML Editor</span>
+            </div>
         </div>
     </div>
-
-    <!-- 4. Custom Context Menu (for taskbar) -->
-    <!-- This entire div is removed -->
-
 
     <!-- Main Desktop & App Logic -->
     <script>
@@ -210,7 +260,6 @@
             // Close start menu if clicking on desktop
             document.getElementById('desktop').addEventListener('click', (e) => {
                 const startMenu = document.getElementById('start-menu');
-                // const contextMenu = document.getElementById('taskbar-context-menu'); // Removed
 
                 // Check if the click is on the desktop itself or the icon container
                 if (e.target.id === 'desktop' || e.target.id === 'desktop-icons') {
@@ -218,10 +267,16 @@
                         startMenu.classList.add('hidden');
                     }
                 }
-                // Removed context menu logic
             });
             
-            // Removed context menu event listeners
+            // Make desktop icons draggable
+            const desktopIcons = document.getElementById('desktop-icons').children;
+            for (let i = 0; i < desktopIcons.length; i++) {
+                // Ensure we only apply dragging to actual icon elements
+                if (desktopIcons[i].classList.contains('desktop-icon')) {
+                    makeIconDraggable(desktopIcons[i]);
+                }
+            }
         }
 
         // --- Clock Logic ---
@@ -262,10 +317,10 @@
                     // This is a simple text editor, not actual Word
                     contentHtml = `<textarea class="w-full h-full p-2 border-0 focus:outline-none resize-none" placeholder="Start typing..."></textarea>`;
                     break;
-                case 'retro98': // Replaced 'paint'
-                    title = 'Retro 98';
+                case 'retro': // Replaced 'paint'
+                    title = 'Retro';
                     iconSrc = 'https://win98icons.alexmeub.com/icons/png/computer-3.png';
-                    // Embedding 98.js.org
+                    
                     contentHtml = `<iframe src="https://winxp.now.sh" class="w-full h-full"></iframe>`;
                     defaultSize = 'w-5/6 max-w-4xl h-5/6'; // Needs more space
                     break;
@@ -288,6 +343,20 @@
                             <iframe src="https://www.wikipedia.org" class="w-full h-full flex-grow"></iframe>
                         </div>`;
                     break;
+                case 'jsrunner':
+                    title = 'JS Runner';
+                    // Base64 encoded SVG for taskbar icon
+                    iconSrc = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNIDEwIDIwIGwgNCAtMTYgbSA0IDQgbCA0IDQgLSA0IDQgbSAwIC04IGwgLSA0IC00IGwgNCAtNCBNIDYgMTYgbCAtNCAtNCBsIDQgLTQiIC8+PC9zdmc+';
+                    contentHtml = createJSRunnerHTML(windowId);
+                    defaultSize = 'w-5/6 max-w-xl h-5/6';
+                    break;
+                case 'htmlrunner':
+                    title = 'HTML Editor';
+                    // Base64 encoded SVG for HTML/Brackets
+                    iconSrc = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNMTQgMTBIMTBtLTQgMGgyMCIgLz48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik03IDhsLTQgNGw0IDRNMTcgOGw0IDRsLTQgNG00LTRoLTYiIC8+PC9zdmc+'; // Simplified bracket icon
+                    contentHtml = createHTMLRunnerHTML(windowId);
+                    defaultSize = 'w-5/6 max-w-4xl h-5/6';
+                    break;
             }
 
             createWindow(appName, title, contentHtml, defaultSize);
@@ -304,9 +373,7 @@
             windowEl.innerHTML = `
                 <!-- Title Bar -->
                 <div class="title-bar h-8 bg-gray-100 flex justify-between items-center px-3 rounded-t-lg border-b">
-                    <!-- Removed the close button from the left -->
-                    <!-- This empty div is a placeholder to keep the right-side buttons justified to the right -->
-                    <div></div> 
+                    <span class="text-sm font-semibold text-gray-700">${title}</span>
                     <div class="flex items-center gap-2">
                         <!-- Minimize -->
                         <button onclick="minimizeWindow('${windowId}')" class="w-5 h-5 rounded-full bg-yellow-400 hover:bg-yellow-500"></button>
@@ -327,6 +394,11 @@
             
             // Focus on creation
             windowEl.addEventListener('mousedown', () => focusWindow(windowEl), true);
+
+            // FIX: Initialize Calculator Display after creation
+            if (appName === 'calculator') {
+                updateCalcDisplay();
+            }
         }
         
         function closeApp(appName) {
@@ -351,16 +423,29 @@
         }
 
         function focusWindow(windowEl) {
+            // Un-minimize if it was hidden
+            windowEl.classList.remove('hidden'); 
+            
+            // Bring to front
             windowEl.style.zIndex = ++zIndexCounter;
-            windowEl.classList.remove('hidden'); // Un-minimize
+
+            // Highlight taskbar icon (optional future feature)
+            // const appName = windowEl.id.split('-')[1];
+            // document.querySelectorAll('.taskbar-icon').forEach(icon => icon.classList.remove('ring-2', 'ring-blue-500'));
+            // document.querySelector(`.taskbar-icon[data-app="${appName}"]`)?.classList.add('ring-2', 'ring-blue-500');
         }
 
         function createTaskbarIcon(appName, iconSrc) {
             const taskbarIcon = document.createElement('button');
-            taskbarIcon.className = 'taskbar-icon w-8 h-8 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors p-1';
+            taskbarIcon.className = 'taskbar-icon w-10 h-10 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors p-1';
             taskbarIcon.dataset.app = appName;
-            taskbarIcon.innerHTML = `<img src="${iconSrc}" class="w-full h-full">`;
-            
+            // Use an SVG or image URL
+            if (iconSrc.startsWith('data:')) {
+                taskbarIcon.innerHTML = `<img src="${iconSrc}" class="w-6 h-6">`;
+            } else {
+                taskbarIcon.innerHTML = `<img src="${iconSrc}" class="w-8 h-8">`;
+            }
+
             taskbarIcon.onclick = () => {
                 const windowEl = document.getElementById(`window-${appName}`);
                 if (windowEl) {
@@ -371,9 +456,7 @@
             document.getElementById('running-apps').appendChild(taskbarIcon);
         }
 
-        // --- Removed Function for Taskbar Context Menu ---
-
-        // --- Window Dragging Logic ---
+        // --- Window Dragging Logic (For App Windows) ---
         function makeDraggable(element) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
             const titleBar = element.querySelector('.title-bar');
@@ -385,6 +468,10 @@
             function dragMouseDown(e) {
                 e = e || window.event;
                 e.preventDefault();
+
+                // Only allow dragging if not maximized
+                if (element.classList.contains('maximized')) return;
+                
                 // Get the mouse cursor position at startup:
                 pos3 = e.clientX;
                 pos4 = e.clientY;
@@ -418,6 +505,70 @@
                 document.onmousemove = null;
             }
         }
+        
+        // --- Icon Dragging Logic (For Desktop Icons) ---
+        function makeIconDraggable(element) {
+            let pos3 = 0, pos4 = 0; // Mouse start position
+            
+            // Set position absolute relative to its container to enable dragging
+            // This is done on first mousedown to calculate current position correctly
+            element.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                
+                // Check if the element is not already positioned absolutely.
+                // If it's relative, we need to convert its current visual position 
+                // to absolute coordinates based on its parent.
+                if (element.style.position !== 'absolute') {
+                    const rect = element.getBoundingClientRect();
+                    const desktopRect = document.getElementById('desktop').getBoundingClientRect();
+                    element.style.position = 'absolute';
+                    // Calculate position relative to the desktop container
+                    element.style.top = `${rect.top - desktopRect.top}px`;
+                    element.style.left = `${rect.left - desktopRect.left}px`;
+                }
+
+                // Get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                
+                // Prevent default drag (like image drag) but allow double click propagation
+                e.preventDefault(); 
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                
+                // Calculate the new cursor position:
+                let pos1 = pos3 - e.clientX;
+                let pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                
+                // Set the element's new position:
+                let newTop = (element.offsetTop - pos2);
+                let newLeft = (element.offsetLeft - pos1);
+                
+                // Basic bounds check (prevent icon from going under taskbar or too far left/up)
+                const minTop = 0;
+                const minLeft = 0;
+                const maxTop = document.getElementById('desktop').clientHeight - element.offsetHeight - document.getElementById('taskbar').offsetHeight;
+                const maxLeft = document.getElementById('desktop').clientWidth - element.offsetWidth;
+                
+                element.style.top = `${Math.max(minTop, Math.min(newTop, maxTop))}px`;
+                element.style.left = `${Math.max(minLeft, Math.min(newLeft, maxLeft))}px`;
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
 
         // --- Calculator App Logic ---
         function createCalculatorHTML() {
@@ -454,10 +605,19 @@
             if (!isNaN(Number(value)) || value === '.') {
                 // Handle number and decimal input
                 if (calcState.waitingForSecondVal) {
+                    // Check if value is '.' and display already contains it
+                    if (value === '.' && calcState.display.includes('.')) return; 
                     calcState.display = value;
                     calcState.waitingForSecondVal = false;
                 } else {
-                    calcState.display = calcState.display === '0' && value !== '.' ? value : calcState.display + value;
+                    // Prevent multiple leading zeros unless followed by a decimal
+                    if (calcState.display === '0' && value !== '.') {
+                        calcState.display = value;
+                    } else if (value === '.' && calcState.display.includes('.')) {
+                        return; // Prevent multiple decimals
+                    } else {
+                        calcState.display += value;
+                    }
                 }
             } else if (value === 'C') {
                 // Clear
@@ -499,15 +659,146 @@
                 case '+': result = val1 + val2; break;
                 case '-': result = val1 - val2; break;
                 case '*': result = val1 * val2; break;
-                case '/': result = val1 / val2; break;
+                case '/': 
+                    if (val2 === 0) return 'Error'; // Division by zero check
+                    result = val1 / val2; 
+                    break;
             }
             // Fix floating point issues
             return parseFloat(result.toPrecision(15)).toString();
         }
 
+        // --- JS Runner App Logic ---
+        function createJSRunnerHTML(windowId) {
+            return `
+                <div class="p-4 flex flex-col h-full space-y-3 bg-gray-50 overflow-hidden">
+                    <h3 class="text-sm font-semibold text-gray-700">Input JavaScript code in here to be ran:</h3>
+                    
+                    <!-- Code Input Area -->
+                    <textarea id="js-code-${windowId}" 
+                              class="w-full h-1/2 p-3 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 resize-none shadow-inner" 
+                              placeholder="Example: console.log(2 + 2);&#10;let x = 'Runner';&#10;return 'JS ' + x;"></textarea>
+                    
+                    <!-- Execute Button -->
+                    <button onclick="executeJSRunnerCode('${windowId}')" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-150 font-bold shadow-md">
+                        Execute !
+                    </button>
+                    
+                    <!-- Output Console Area -->
+                    <div class="flex-grow flex flex-col border border-gray-400 rounded-lg p-3 bg-gray-800 overflow-y-auto">
+                        <h3 class="text-sm font-medium text-green-400 mb-1 border-b border-green-500/20 pb-1">Output Console:</h3>
+                        <pre id="js-output-${windowId}" class="text-xs text-white whitespace-pre-wrap flex-grow font-mono leading-relaxed"></pre>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function executeJSRunnerCode(windowId) {
+            const codeEl = document.getElementById(`js-code-${windowId}`);
+            const outputEl = document.getElementById(`js-output-${windowId}`);
+            const userCode = codeEl.value;
+            
+            // Clear previous output
+            outputEl.textContent = '';
+            outputEl.style.color = 'white'; // Reset color from potential error state
+
+            // Store original console.log
+            const originalConsoleLog = console.log;
+            let output = '';
+
+            // Override console.log to capture output
+            console.log = function(...args) {
+                // Convert arguments to a string representation
+                const message = args.map(arg => {
+                    if (typeof arg === 'object' && arg !== null) {
+                        try {
+                            return JSON.stringify(arg, null, 2);
+                        } catch {
+                            return String(arg); 
+                        }
+                    }
+                    return String(arg);
+                }).join(' ');
+                
+                output += message + '\n';
+                // Call the original console.log for browser debugging
+                originalConsoleLog.apply(console, args); 
+            };
+
+            try {
+                // Execute the code safely using Function constructor
+                const result = (new Function(userCode))();
+                
+                if (output) {
+                    outputEl.textContent = output.trim();
+                } else if (result !== undefined) {
+                    // If no console output, show the return value of the script
+                    outputEl.textContent = `[Return Value]\n${result}`;
+                } else {
+                    outputEl.textContent = 'Code executed successfully (no console output or return value).';
+                }
+
+            } catch (error) {
+                // Display error message
+                outputEl.textContent = `[EXECUTION ERROR]\n${error.name}: ${error.message}`;
+                outputEl.style.color = 'rgb(252 165 165)'; // Tailored red color
+            } finally {
+                // Restore original console.log immediately
+                console.log = originalConsoleLog;
+            }
+        }
+        
+        // --- HTML Runner App Logic (NEW) ---
+        function createHTMLRunnerHTML(windowId) {
+            return `
+                <div class="grid grid-cols-2 h-full bg-gray-50 overflow-hidden divide-x divide-gray-200">
+                    <!-- Input Panel -->
+                    <div class="flex flex-col h-full p-2 space-y-2">
+                        <h3 class="text-sm font-semibold text-gray-700">Code (HTML/CSS/JS):</h3>
+                        <textarea id="html-code-${windowId}" 
+                                  class="w-full flex-grow p-2 border border-gray-300 rounded-lg text-xs font-mono focus:ring-2 focus:ring-purple-500 resize-none shadow-inner" 
+                                  placeholder="Type your HTML code here, including <style> and <script> tags.">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #e0f7fa; }
+        h1 { color: #00bcd4; }
+    </style>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+    <p>This is rendered from the HTML Editor.</p>
+</body>
+</html>
+</textarea>
+                        <button onclick="runHTMLRunnerCode('${windowId}')" class="bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition duration-150 font-bold shadow-md">
+                            Run HTML/Preview
+                        </button>
+                    </div>
+                    
+                    <!-- Output Panel -->
+                    <div class="flex flex-col h-full p-2">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-2">Live Preview:</h3>
+                        <iframe id="html-output-${windowId}" 
+                                sandbox="allow-scripts allow-same-origin"
+                                class="w-full flex-grow border border-gray-400 rounded-lg bg-white"></iframe>
+                    </div>
+                </div>
+            `;
+        }
+
+        function runHTMLRunnerCode(windowId) {
+            const codeEl = document.getElementById(`html-code-${windowId}`);
+            const outputIframe = document.getElementById(`html-output-${windowId}`);
+            const userCode = codeEl.value;
+            
+            // Set the iframe's content directly using srcdoc. 
+            // The sandbox attribute in the iframe tag ensures safety.
+            outputIframe.srcdoc = userCode;
+        }
+
     </script>
 
 </body>
-
 </html>
-
