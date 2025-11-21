@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 11 Desktop</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Use a font similar to Windows 11's Segoe UI */
+        body {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Custom text shadow for desktop icon labels */
+        .icon-label {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* The main desktop container */
+        #desktop {
+            background-image: url('https://wallpapercave.com/wp/wp8301183.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Styling for app windows */
+        .app-window {
+            min-height: 150px;
+            min-width: 250px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            /* Enable resizing */
+            resize: both;
+            overflow: hidden; /* This is key for resize to work with flex */
+        }
+
+        /* Style for the title bar used as a drag handle */
+        .title-bar {
+            cursor: move;
+            user-select: none; /* Prevent text selection while dragging */
+        }
+        
+        /* Maximized window state */
+        .app-window.maximized {
+            width: 100% !important;
+            height: calc(100% - 3.5rem) !important; /* Full height minus taskbar */
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
+            resize: none;
+        }
+
+        /* Hide the default iframe border */
+        .window-content iframe {
+            border: none;
+        }
+
+        /* Calculator button styles */
+        .calc-btn {
+            @apply w-full h-16 bg-gray-200 rounded-md text-2xl font-medium transition-colors duration-150 flex items-center justify-center;
+        }
+        .calc-btn:hover {
+            @apply bg-gray-300;
+        }
+        .calc-btn.operator {
+            @apply bg-orange-400 text-white;
+        }
+        .calc-btn.operator:hover {
+            @apply bg-orange-500;
+        }
+    </style>
+</head>
+<body class="w-screen h-screen overflow-hidden" onload="initDesktop()">
+
+    <!-- 1. The Desktop -->
+    <div id="desktop" class="w-full h-full relative">
+
+        <!-- 1a. Desktop Icons -->
+        <!-- Added relative z-10 here to make icons clickable above the window container -->
+        <div id="desktop-icons" class="relative z-10 p-4 flex flex-col flex-wrap h-full content-start gap-2">
+            
+            <!-- MS Word Icon -->
+            <div ondblclick="openApp('word')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+                <!-- Updated icon URL -->
+                <img src="https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg" alt="Word Icon" class="w-12 h-12">
+                <span class="text-white text-xs text-center mt-1 icon-label">Word</span>
+            </div>
+            
+            <!-- Retro 98 Icon (Replaces Paint) -->
+            <div ondblclick="openApp('retro98')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+                <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" alt="Retro 98 Icon" class="w-12 h-12">
+                <span class="text-white text-xs text-center mt-1 icon-label">Retro 98</span>
+            </div>
+
+            <!-- Calculator Icon -->
+            <div ondblclick="openApp('calculator')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+                <!-- Updated icon URL -->
+                <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" alt="Calculator Icon" class="w-12 h-12">
+                <span class="text-white text-xs text-center mt-1 icon-label">Calculator</span>
+            </div>
+
+            <!-- Chrome Icon -->
+            <div ondblclick="openApp('chrome')" class="flex flex-col items-center justify-start w-24 h-24 rounded-lg hover:bg-white/20 p-2 cursor-pointer group">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" alt="Chrome Icon" class="w-12 h-12">
+                <span class="text-white text-xs text-center mt-1 icon-label">Chrome</span>
+            </div>
+        </div>
+
+        <!-- 1b. App Windows Container -->
+        <div id="app-windows-container" class="absolute inset-0">
+            <!-- App windows will be dynamically added here -->
+        </div>
+
+    </div>
+
+    <!-- 2. The Taskbar -->
+    <!-- Added z-30 to ensure the taskbar is on a clickable layer -->
+    <div id="taskbar" class="absolute bottom-0 left-0 right-0 h-14 bg-white/70 backdrop-blur-md flex items-center justify-between px-4 shadow-t-lg z-30">
+        <!-- Left Aligned Stuff (empty for now) -->
+        <div></div>
+        
+        <!-- Centered Icons -->
+        <div class="flex items-center gap-3">
+            <!-- Start Button -->
+            <button onclick="toggleStartMenu()" class="w-10 h-10 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors">
+                <!-- Updated icon URL -->
+                <img src="https://cdn.worldvectorlogo.com/logos/windows-11.svg" alt="Start" class="w-6 h-6">
+            </button>
+            
+            <!-- Container for running apps -->
+            <div id="running-apps" class="flex items-center gap-2">
+                <!-- Running app icons will be dynamically added here -->
+            </div>
+        </div>
+        
+        <!-- Right Aligned Clock -->
+        <div id="clock" class="text-xs text-gray-800 text-right">
+            <div>12:00 PM</div>
+            <div>11/21/2025</div>
+        </div>
+    </div>
+
+    <!-- 3. The Start Menu -->
+    <div id="start-menu" class="absolute bottom-16 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[600px] bg-white/80 backdrop-blur-lg rounded-lg shadow-2xl p-6 hidden transition-all z-40">
+        <!-- Search Bar -->
+        <div class="relative mb-6">
+            <input type="text" placeholder="Search" class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+        </div>
+        
+        <!-- Pinned Apps -->
+        <h2 class="text-lg font-semibold mb-3">Pinned</h2>
+        <div class="grid grid-cols-6 gap-4">
+            <!-- Word -->
+            <div onclick="openApp('word'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <!-- Updated icon URL -->
+                <img src="https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg" class="w-12 h-12">
+                <span class="text-xs mt-1">Word</span>
+            </div>
+            <!-- Retro 98 (Replaces Paint) -->
+            <div onclick="openApp('retro98'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" class="w-12 h-12">
+                <span class="text-xs mt-1">Retro 98</span>
+            </div>
+            <!-- Calculator -->
+            <div onclick="openApp('calculator'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <!-- Updated icon URL -->
+                <!-- Fixed typo in src -->
+                <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" class="w-12 h-12">
+                <span class="text-xs mt-1">Calculator</span>
+            </div>
+            <!-- Chrome -->
+            <div onclick="openApp('chrome'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <!-- Fixed typo in URL -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" class="w-12 h-12">
+                <span class="text-xs mt-1">Chrome</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Custom Context Menu (for taskbar) -->
+    <!-- This entire div is removed -->
+
+
+    <!-- Main Desktop & App Logic -->
+    <script>
+        let zIndexCounter = 10;
+        let calcState = {
+            display: '0',
+            firstVal: null,
+            operator: null,
+            waitingForSecondVal: false,
+        };
+
+        // --- Desktop Initialization ---
+        function initDesktop() {
+            updateClock();
+            setInterval(updateClock, 1000); // Update clock every second
+            
+            // Close start menu if clicking on desktop
+            document.getElementById('desktop').addEventListener('click', (e) => {
+                const startMenu = document.getElementById('start-menu');
+                // const contextMenu = document.getElementById('taskbar-context-menu'); // Removed
+
+                // Check if the click is on the desktop itself or the icon container
+                if (e.target.id === 'desktop' || e.target.id === 'desktop-icons') {
+                    if (!startMenu.classList.contains('hidden')) {
+                        startMenu.classList.add('hidden');
+                    }
+                }
+                // Removed context menu logic
+            });
+            
+            // Removed context menu event listeners
+        }
+
+        // --- Clock Logic ---
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const date = now.toLocaleDateString([], { month: 'numeric', day: 'numeric', year: 'numeric' });
+            document.getElementById('clock').innerHTML = `<div>${time}</div><div>${date}</div>`;
+        }
+
+        // --- Start Menu ---
+        function toggleStartMenu() {
+            document.getElementById('start-menu').classList.toggle('hidden');
+        }
+
+        // --- App Management ---
+        function openApp(appName) {
+            const windowId = `window-${appName}`;
+            const existingWindow = document.getElementById(windowId);
+
+            // If window exists, just focus it
+            if (existingWindow) {
+                focusWindow(existingWindow);
+                existingWindow.classList.remove('hidden'); // Un-minimize
+                return;
+            }
+
+            // Define app properties
+            let title = '';
+            let contentHtml = '';
+            let iconSrc = '';
+            let defaultSize = 'w-5/6 max-w-3xl h-3/4'; // default
+
+            switch(appName) {
+                case 'word':
+                    title = 'Word';
+                    iconSrc = 'https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg';
+                    // This is a simple text editor, not actual Word
+                    contentHtml = `<textarea class="w-full h-full p-2 border-0 focus:outline-none resize-none" placeholder="Start typing..."></textarea>`;
+                    break;
+                case 'retro98': // Replaced 'paint'
+                    title = 'Retro 98';
+                    iconSrc = 'https://win98icons.alexmeub.com/icons/png/computer-3.png';
+                    // Embedding 98.js.org
+                    contentHtml = `<iframe src="https://98.js.org/" class="w-full h-full"></iframe>`;
+                    defaultSize = 'w-5/6 max-w-4xl h-5/6'; // Needs more space
+                    break;
+                case 'calculator':
+                    title = 'Calculator';
+                    iconSrc = 'https://cdn.worldvectorlogo.com/logos/windows-calculator.svg';
+                    contentHtml = createCalculatorHTML();
+                    defaultSize = 'w-80 h-auto'; // Fixed size for calculator
+                    break;
+                case 'chrome':
+                    title = 'Chrome';
+                    iconSrc = 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg';
+                    // A simple browser "chrome" framing Wikipedia
+                    contentHtml = `
+                        <div class="w-full h-full flex flex-col">
+                            <div class="p-2 bg-gray-100 border-b flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                                <input type="text" readonly value="https://www.wikipedia.org" class="w-full bg-white border rounded-full px-3 py-1 text-sm">
+                            </div>
+                            <iframe src="https://www.wikipedia.org" class="w-full h-full flex-grow"></iframe>
+                        </div>`;
+                    break;
+            }
+
+            createWindow(appName, title, contentHtml, defaultSize);
+            createTaskbarIcon(appName, iconSrc);
+        }
+
+        function createWindow(appName, title, contentHtml, size) {
+            const windowId = `window-${appName}`;
+            const windowEl = document.createElement('div');
+            windowEl.id = windowId;
+            windowEl.className = `app-window absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg flex flex-col ${size}`;
+            windowEl.style.zIndex = ++zIndexCounter;
+            
+            windowEl.innerHTML = `
+                <!-- Title Bar -->
+                <div class="title-bar h-8 bg-gray-100 flex justify-between items-center px-3 rounded-t-lg border-b">
+                    <!-- Removed the close button from the left -->
+                    <!-- This empty div is a placeholder to keep the right-side buttons justified to the right -->
+                    <div></div> 
+                    <div class="flex items-center gap-2">
+                        <!-- Minimize -->
+                        <button onclick="minimizeWindow('${windowId}')" class="w-5 h-5 rounded-full bg-yellow-400 hover:bg-yellow-500"></button>
+                        <!-- Maximize -->
+                        <button onclick="maximizeWindow('${windowId}')" class="w-5 h-5 rounded-full bg-green-400 hover:bg-green-500"></button>
+                        <!-- Close -->
+                        <button onclick="closeApp('${appName}')" class="w-5 h-5 rounded-full bg-red-500 hover:bg-red-600"></button>
+                    </div>
+                </div>
+                <!-- Window Content -->
+                <div class="window-content flex-grow relative ${appName === 'calculator' ? 'p-2 bg-gray-100' : ''}">
+                    ${contentHtml}
+                </div>
+            `;
+            
+            document.getElementById('app-windows-container').appendChild(windowEl);
+            makeDraggable(windowEl);
+            
+            // Focus on creation
+            windowEl.addEventListener('mousedown', () => focusWindow(windowEl), true);
+        }
+        
+        function closeApp(appName) {
+            const windowId = `window-${appName}`;
+            const windowEl = document.getElementById(windowId);
+            if (windowEl) {
+                windowEl.remove();
+            }
+            
+            const taskbarIcon = document.querySelector(`.taskbar-icon[data-app="${appName}"]`);
+            if (taskbarIcon) {
+                taskbarIcon.remove();
+            }
+        }
+
+        function minimizeWindow(windowId) {
+            document.getElementById(windowId).classList.add('hidden');
+        }
+
+        function maximizeWindow(windowId) {
+            document.getElementById(windowId).classList.toggle('maximized');
+        }
+
+        function focusWindow(windowEl) {
+            windowEl.style.zIndex = ++zIndexCounter;
+            windowEl.classList.remove('hidden'); // Un-minimize
+        }
+
+        function createTaskbarIcon(appName, iconSrc) {
+            const taskbarIcon = document.createElement('button');
+            taskbarIcon.className = 'taskbar-icon w-8 h-8 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors p-1';
+            taskbarIcon.dataset.app = appName;
+            taskbarIcon.innerHTML = `<img src="${iconSrc}" class="w-full h-full">`;
+            
+            taskbarIcon.onclick = () => {
+                const windowEl = document.getElementById(`window-${appName}`);
+                if (windowEl) {
+                    focusWindow(windowEl);
+                }
+            };
+            
+            document.getElementById('running-apps').appendChild(taskbarIcon);
+        }
+
+        // --- Removed Function for Taskbar Context Menu ---
+
+        // --- Window Dragging Logic ---
+        function makeDraggable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const titleBar = element.querySelector('.title-bar');
+
+            if (titleBar) {
+                titleBar.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // Get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                
+                // Focus window on drag start
+                focusWindow(element);
+
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // Don't drag if maximized
+                if (element.classList.contains('maximized')) return;
+
+                // Calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // Set the element's new position:
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // Stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        // --- Calculator App Logic ---
+        function createCalculatorHTML() {
+            const buttons = [
+                'C', '+/-', '%', '/',
+                '7', '8', '9', '*',
+                '4', '5', '6', '-',
+                '1', '2', '3', '+',
+                '0', '.', '='
+            ];
+            
+            let html = '<div id="calc-display" class="w-full h-20 bg-gray-100 text-right text-5xl font-light pr-4 pt-4 mb-2 rounded-md break-all">0</div>';
+            html += '<div class="grid grid-cols-4 gap-2">';
+            
+            buttons.forEach(btn => {
+                let classes = 'calc-btn';
+                if (['/', '*', '-', '+', '='].includes(btn)) classes += ' operator';
+                if (btn === '0') classes += ' col-span-2';
+                html += `<button class="text-xl ${classes}" onclick="handleCalcInput('${btn}')">${btn}</button>`;
+            });
+            
+            html += '</div>';
+            return html;
+        }
+
+        function updateCalcDisplay() {
+            const displayEl = document.getElementById('calc-display');
+            if (displayEl) {
+                displayEl.innerText = calcState.display;
+            }
+        }
+
+        function handleCalcInput(value) {
+            if (!isNaN(Number(value)) || value === '.') {
+                // Handle number and decimal input
+                if (calcState.waitingForSecondVal) {
+                    calcState.display = value;
+                    calcState.waitingForSecondVal = false;
+                } else {
+                    calcState.display = calcState.display === '0' && value !== '.' ? value : calcState.display + value;
+                }
+            } else if (value === 'C') {
+                // Clear
+                calcState.display = '0';
+                calcState.firstVal = null;
+                calcState.operator = null;
+                calcState.waitingForSecondVal = false;
+            } else if (value === '+/-') {
+                // Plus/Minus
+                calcState.display = (parseFloat(calcState.display) * -1).toString();
+            } else if (value === '%') {
+                // Percentage
+                calcState.display = (parseFloat(calcState.display) / 100).toString();
+            } else if (value === '=') {
+                // Equals
+                if (calcState.firstVal !== null && calcState.operator !== null) {
+                    calcState.display = calculate(calcState.firstVal, parseFloat(calcState.display), calcState.operator);
+                    calcState.firstVal = null;
+                    calcState.operator = null;
+                    calcState.waitingForSecondVal = false;
+                }
+            } else {
+                // Operator
+                if (calcState.operator !== null && !calcState.waitingForSecondVal) {
+                    // Chain operations: 1 + 2 + 3
+                    calcState.display = calculate(calcState.firstVal, parseFloat(calcState.display), calcState.operator);
+                }
+                calcState.firstVal = parseFloat(calcState.display);
+                calcState.operator = value;
+                calcState.waitingForSecondVal = true;
+            }
+
+            updateCalcDisplay();
+        }
+        
+        function calculate(val1, val2, operator) {
+            let result = 0;
+            switch(operator) {
+                case '+': result = val1 + val2; break;
+                case '-': result = val1 - val2; break;
+                case '*': result = val1 * val2; break;
+                case '/': result = val1 / val2; break;
+            }
+            // Fix floating point issues
+            return parseFloat(result.toPrecision(15)).toString();
+        }
+
+    </script>
+
+</body>
+</html>
