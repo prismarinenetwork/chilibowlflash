@@ -6,7 +6,7 @@
     <title>Windows 11 Desktop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         /* Use a font similar to Windows 11's Segoe UI */
         body {
@@ -21,21 +21,21 @@
         .icon-label {
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
         }
-        
+
         /* The main desktop container */
         #desktop {
             background-image: url('https://wallpapercave.com/wp/wp15039692.webp');
             background-size: cover;
             background-position: center;
         }
-        
+
         /* Style the container for the icons so absolute positioning works */
         #desktop-icons {
              /* Set to full size to define the absolute positioning context */
              width: 100%;
              height: 100%;
              /* Remove flex properties since we are manually positioning icons */
-             display: block; 
+             display: block;
         }
 
         /* Desktop Icon Base Style */
@@ -68,7 +68,7 @@
             cursor: move;
             user-select: none; /* Prevent text selection while dragging */
         }
-        
+
         /* Maximized window state - FIX APPLIED HERE */
         .app-window.maximized {
             /* Use viewport units (vw/vh) for reliable full screen sizing */
@@ -99,6 +99,28 @@
         .calc-btn.operator:hover {
             @apply bg-orange-500;
         }
+
+        /* Dark Taskbar Styling */
+        #taskbar {
+             /* Changed from bg-white/70 to a dark grey with blur */
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        #taskbar .taskbar-icon {
+            /* Adjust hover color for dark theme */
+            @apply hover:bg-white/10;
+        }
+        #taskbar .taskbar-icon img {
+             /* Optional: Slightly adjust icon appearance if needed, but not strictly necessary */
+        }
+        #taskbar #clock {
+             /* Change clock text color to white for visibility on dark background */
+            @apply text-white;
+        }
+        #taskbar button {
+             /* Adjust start button hover for dark theme */
+            @apply hover:bg-white/10;
+        }
     </style>
 </head>
 <body class="w-screen h-screen overflow-hidden" onload="initDesktop()">
@@ -106,12 +128,12 @@
     <div id="desktop" class="w-full h-full relative">
 
         <div id="desktop-icons" class="relative">
-            
+
             <div id="icon-word" ondblclick="openApp('word')" class="desktop-icon top-4 left-4">
                 <img src="https://cdn.worldvectorlogo.com/logos/word-1.svg" alt="Word Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Word</span>
             </div>
-            
+
             <div id="icon-retro" ondblclick="openApp('retro')" class="desktop-icon top-[110px] left-4">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" alt="Retro 98 Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Retro</span>
@@ -131,7 +153,7 @@
                 <svg class="w-12 h-12 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-white text-xs text-center mt-1 icon-label">JS Runner</span>
             </div>
-            
+
              <div id="icon-htmlrunner" ondblclick="openApp('htmlrunner')" class="desktop-icon top-4 left-[116px]">
                 <svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 8h-4m-4 0h4m-4 4h4m-4 0h4" opacity="0.5"></path></svg>
                 <span class="text-white text-xs text-center mt-1 icon-label">HTML Editor</span>
@@ -145,16 +167,16 @@
 
     <div id="taskbar" class="absolute bottom-0 left-0 right-0 h-14 bg-white/70 backdrop-blur-md flex items-center justify-between px-4 shadow-t-lg z-30">
         <div></div>
-        
+
         <div class="flex items-center gap-3">
             <button onclick="toggleStartMenu()" class="w-10 h-10 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors">
                 <img src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg" alt="Start" class="w-6 h-6">
             </button>
-            
+
             <div id="running-apps" class="flex items-center gap-2">
                 </div>
         </div>
-        
+
         <div id="clock" class="text-xs text-gray-800 text-right">
             <div>12:00 PM</div>
             <div>11/21/2025</div>
@@ -168,19 +190,19 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
         </div>
-        
+
         <h2 class="text-lg font-semibold mb-3">Pinned</h2>
         <div class="grid grid-cols-6 gap-4">
             <div onclick="openApp('word'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Word</span>
             </div>
-            
+
             <div onclick="openApp('retro'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" class="w-12 h-12">
                 <span class="text-xs mt-1">Retro</span>
             </div>
-            
+
             <div onclick="openApp('calculator'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Calculator</span>
@@ -195,7 +217,7 @@
                 <svg class="w-12 h-12 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-xs mt-1">JS Runner</span>
             </div>
-            
+
             <div onclick="openApp('htmlrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-xs mt-1">HTML Editor</span>
@@ -211,17 +233,17 @@
             operator: null,
             waitingForSecondVal: false,
         };
-        
+
         // --- Icon Snapping and Collision Check Logic (REUSABLE) ---
         function snapIconToGrid(element, isInitial = false) {
             const GRID_SIZE = 106; // Width/Height of the grid cell
-            
+
             // 1. Ensure the icon is absolutely positioned before calculating
             if (element.style.position !== 'absolute') {
                 const rect = element.getBoundingClientRect();
                 const desktopRect = document.getElementById('desktop').getBoundingClientRect();
                 element.style.position = 'absolute';
-                
+
                 // If this is the initial setup, use the current relative position as the starting point.
                 let startTop = isInitial ? (rect.top - desktopRect.top) : element.offsetTop;
                 let startLeft = isInitial ? (rect.left - desktopRect.left) : element.offsetLeft;
@@ -252,7 +274,7 @@
             // Collision Detection
             const allIcons = document.getElementById('desktop-icons').children;
             let collisionDetected = true;
-            let maxIterations = 50; 
+            let maxIterations = 50;
 
             // Try to find a free position by shifting down one grid cell at a time
             while (collisionDetected && maxIterations > 0) {
@@ -261,29 +283,29 @@
                     const otherIcon = allIcons[i];
                     // Skip self and non-icon elements
                     if (otherIcon === element || !otherIcon.classList.contains('desktop-icon')) continue;
-                    
+
                     // Skip icons that haven't been made absolute yet (only relevant during initial run)
-                    if (otherIcon.style.position !== 'absolute' && isInitial) continue; 
+                    if (otherIcon.style.position !== 'absolute' && isInitial) continue;
 
                     const otherTop = otherIcon.offsetTop;
                     const otherLeft = otherIcon.offsetLeft;
 
                     if (snappedTop === otherTop && snappedLeft === otherLeft) {
                         // Collision detected! Shift the snapped position down by one grid cell
-                        snappedTop += GRID_SIZE; 
-                        
+                        snappedTop += GRID_SIZE;
+
                         // Re-apply bounds check after shifting
                         snappedTop = Math.min(snappedTop, maxTop);
-                        
+
                         // If we shifted and hit the boundary, and collision still exists, stop.
                         if (snappedTop === maxTop && maxTop === otherTop) {
-                            collisionDetected = false; 
-                            break; 
+                            collisionDetected = false;
+                            break;
                         }
-                        
+
                         // Set flag to re-run the check against all icons with the new snappedTop
-                        collisionDetected = true; 
-                        break; 
+                        collisionDetected = true;
+                        break;
                     }
                 }
                 maxIterations--;
@@ -298,7 +320,7 @@
         function initDesktop() {
             updateClock();
             setInterval(updateClock, 1000); // Update clock every second
-            
+
             // Close start menu if clicking on desktop
             document.getElementById('desktop').addEventListener('click', (e) => {
                 const startMenu = document.getElementById('start-menu');
@@ -310,7 +332,7 @@
                     }
                 }
             });
-            
+
             // Make desktop icons draggable AND snap them to the grid immediately
             const desktopIcons = document.getElementById('desktop-icons').children;
             for (let i = 0; i < desktopIcons.length; i++) {
@@ -318,7 +340,7 @@
                 if (desktopIcons[i].classList.contains('desktop-icon')) {
                     // 1. Snap to grid first to correct initial position and apply absolute positioning
                     snapIconToGrid(desktopIcons[i], true); // true indicates initial setup
-                    
+
                     // 2. Then make them draggable
                     makeIconDraggable(desktopIcons[i]);
                 }
@@ -366,7 +388,7 @@
                 case 'retro': // Replaced 'paint'
                     title = 'Retro';
                     iconSrc = 'https://win98icons.alexmeub.com/icons/png/computer-3.png';
-                    
+
                     contentHtml = `<iframe src="https://winxp.now.sh" class="w-full h-full"></iframe>`;
                     defaultSize = 'w-5/6 max-w-4xl h-5/6'; // Needs more space
                     break;
@@ -379,15 +401,15 @@
                 case 'chrome':
                     title = 'Chrome';
                     iconSrc = 'https://cdn.worldvectorlogo.com/logos/chrome.svg';
-                   
+
                     contentHtml = `
                         <div class="w-full h-full flex flex-col">
                             <div class="p-2 bg-gray-100 border-b flex items-center gap-2">
                                 <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
                                 <input type="text" value="about:blank" onkeydown="event.stopPropagation()" class="w-full bg-white border rounded-full px-3 py-1 text-sm">
                             </div>
-                            <iframe 
-                                src="https://eaglercraft.mywire.org/diablo.html" 
+                            <iframe
+                                src="https://eaglercraft.mywire.org/diablo.html"
                                 class="w-full h-full flex-grow"
                                 sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-top-navigation allow-modals"
                                 allow="fullscreen; pointer-lock"
@@ -420,7 +442,7 @@
             windowEl.id = windowId;
             windowEl.className = `app-window absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg flex flex-col ${size}`;
             windowEl.style.zIndex = ++zIndexCounter;
-            
+
             windowEl.innerHTML = `
                 <div class="title-bar h-8 bg-gray-100 flex justify-between items-center px-3 rounded-t-lg border-b">
                     <span class="text-sm font-semibold text-gray-700">${title}</span>
@@ -434,10 +456,10 @@
                     ${contentHtml}
                 </div>
             `;
-            
+
             document.getElementById('app-windows-container').appendChild(windowEl);
             makeDraggable(windowEl);
-            
+
             // Focus on creation
             windowEl.addEventListener('mousedown', () => focusWindow(windowEl), true);
 
@@ -446,14 +468,14 @@
                 updateCalcDisplay();
             }
         }
-        
+
         function closeApp(appName) {
             const windowId = `window-${appName}`;
             const windowEl = document.getElementById(windowId);
             if (windowEl) {
                 windowEl.remove();
             }
-            
+
             const taskbarIcon = document.querySelector(`.taskbar-icon[data-app="${appName}"]`);
             if (taskbarIcon) {
                 taskbarIcon.remove();
@@ -470,8 +492,8 @@
 
         function focusWindow(windowEl) {
             // Un-minimize if it was hidden
-            windowEl.classList.remove('hidden'); 
-            
+            windowEl.classList.remove('hidden');
+
             // Bring to front
             windowEl.style.zIndex = ++zIndexCounter;
 
@@ -483,6 +505,7 @@
 
         function createTaskbarIcon(appName, iconSrc) {
             const taskbarIcon = document.createElement('button');
+            // Class uses dark theme hover adjustment from the CSS style block
             taskbarIcon.className = 'taskbar-icon w-10 h-10 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors p-1';
             taskbarIcon.dataset.app = appName;
             // Use an SVG or image URL
@@ -498,7 +521,7 @@
                     focusWindow(windowEl);
                 }
             };
-            
+
             document.getElementById('running-apps').appendChild(taskbarIcon);
         }
 
@@ -517,11 +540,11 @@
 
                 // Only allow dragging if not maximized
                 if (element.classList.contains('maximized')) return;
-                
+
                 // Get the mouse cursor position at startup:
                 pos3 = e.clientX;
                 pos4 = e.clientY;
-                
+
                 // Focus window on drag start
                 focusWindow(element);
 
@@ -557,7 +580,7 @@
                 }
             }
         }
-        
+
         // --- Icon Dragging Logic (For Desktop Icons) ---
         function makeIconDraggable(element) {
             let pos3 = 0, pos4 = 0; // Mouse start position
@@ -566,7 +589,7 @@
 
             function dragMouseDown(e) {
                 e = e || window.event;
-                
+
                 // Convert position to absolute on first drag (this is now handled by initDesktop, but kept as a fallback/safety)
                 if (element.style.position !== 'absolute') {
                     const rect = element.getBoundingClientRect();
@@ -582,23 +605,23 @@
 
                 document.onmouseup = closeDragElement;
                 document.onmousemove = elementDrag;
-                
-                e.preventDefault(); 
+
+                e.preventDefault();
             }
 
             function elementDrag(e) {
                 e = e || window.event;
-                
+
                 // Calculate the new cursor position:
                 let pos1 = pos3 - e.clientX;
                 let pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
-                
+
                 // Set the element's new position (temporary, before snapping):
                 let newTop = (element.offsetTop - pos2);
                 let newLeft = (element.offsetLeft - pos1);
-                
+
                 // Set the temporary position immediately for smooth dragging
                 element.style.top = `${newTop}px`;
                 element.style.left = `${newLeft}px`;
@@ -624,17 +647,17 @@
                 '1', '2', '3', '+',
                 '0', '.', '='
             ];
-            
+
             let html = '<div id="calc-display" class="w-full h-20 bg-gray-100 text-right text-5xl font-light pr-4 pt-4 mb-2 rounded-md break-all">0</div>';
             html += '<div class="grid grid-cols-4 gap-2">';
-            
+
             buttons.forEach(btn => {
                 let classes = 'calc-btn';
                 if (['/', '*', '-', '+', '='].includes(btn)) classes += ' operator';
                 if (btn === '0') classes += ' col-span-2';
                 html += `<button class="text-xl ${classes}" onclick="handleCalcInput('${btn}')">${btn}</button>`;
             });
-            
+
             html += '</div>';
             return html;
         }
@@ -651,7 +674,7 @@
                 // Handle number and decimal input
                 if (calcState.waitingForSecondVal) {
                     // Check if value is '.' and display already contains it
-                    if (value === '.' && calcState.display.includes('.')) return; 
+                    if (value === '.' && calcState.display.includes('.')) return;
                     calcState.display = value;
                     calcState.waitingForSecondVal = false;
                 } else {
@@ -697,16 +720,16 @@
 
             updateCalcDisplay();
         }
-        
+
         function calculate(val1, val2, operator) {
             let result = 0;
             switch(operator) {
                 case '+': result = val1 + val2; break;
                 case '-': result = val1 - val2; break;
                 case '*': result = val1 * val2; break;
-                case '/': 
+                case '/':
                     if (val2 === 0) return 'Error'; // Division by zero check
-                    result = val1 / val2; 
+                    result = val1 / val2;
                     break;
             }
             // Fix floating point issues
@@ -718,15 +741,15 @@
             return `
                 <div class="p-4 flex flex-col h-full space-y-3 bg-gray-50 overflow-hidden">
                     <h3 class="text-sm font-semibold text-gray-700">Input JavaScript code in here to be ran:</h3>
-                    
-                    <textarea id="js-code-${windowId}" 
-                              class="w-full h-1/2 p-3 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 resize-none shadow-inner" 
+
+                    <textarea id="js-code-${windowId}"
+                              class="w-full h-1/2 p-3 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 resize-none shadow-inner"
                               placeholder="Example: console.log(2 + 2);&#10;let x = 'Runner';&#10;return 'JS ' + x;"></textarea>
-                    
+
                     <button onclick="executeJSRunnerCode('${windowId}')" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-150 font-bold shadow-md">
                         Execute !
                     </button>
-                    
+
                     <div class="flex-grow flex flex-col border border-gray-400 rounded-lg p-3 bg-gray-800 overflow-y-auto">
                         <h3 class="text-sm font-medium text-green-400 mb-1 border-b border-green-500/20 pb-1">Output Console:</h3>
                         <pre id="js-output-${windowId}" class="text-xs text-white whitespace-pre-wrap flex-grow font-mono leading-relaxed"></pre>
@@ -734,12 +757,12 @@
                 </div>
             `;
         }
-        
+
         function executeJSRunnerCode(windowId) {
             const codeEl = document.getElementById(`js-code-${windowId}`);
             const outputEl = document.getElementById(`js-output-${windowId}`);
             const userCode = codeEl.value;
-            
+
             // Clear previous output
             outputEl.textContent = '';
             outputEl.style.color = 'white'; // Reset color from potential error state
@@ -756,21 +779,21 @@
                         try {
                             return JSON.stringify(arg, null, 2);
                         } catch {
-                            return String(arg); 
+                            return String(arg);
                         }
                     }
                     return String(arg);
                 }).join(' ');
-                
+
                 output += message + '\n';
                 // Call the original console.log for browser debugging
-                originalConsoleLog.apply(console, args); 
+                originalConsoleLog.apply(console, args);
             };
 
             try {
                 // Execute the code safely using Function constructor
                 const result = (new Function(userCode))();
-                
+
                 if (output) {
                     outputEl.textContent = output.trim();
                 } else if (result !== undefined) {
@@ -789,15 +812,15 @@
                 console.log = originalConsoleLog;
             }
         }
-        
+
         // --- HTML Runner App Logic (NEW) ---
         function createHTMLRunnerHTML(windowId) {
             return `
                 <div class="grid grid-cols-2 h-full bg-gray-50 overflow-hidden divide-x divide-gray-200">
                     <div class="flex flex-col h-full p-2 space-y-2">
                         <h3 class="text-sm font-semibold text-gray-700">Code (HTML/CSS/JS):</h3>
-                        <textarea id="html-code-${windowId}" 
-                                  class="w-full flex-grow p-2 border border-gray-300 rounded-lg text-xs font-mono focus:ring-2 focus:ring-purple-500 resize-none shadow-inner" 
+                        <textarea id="html-code-${windowId}"
+                                  class="w-full flex-grow p-2 border border-gray-300 rounded-lg text-xs font-mono focus:ring-2 focus:ring-purple-500 resize-none shadow-inner"
                                   placeholder="Type your HTML code here, including <style> and <script> tags.">
 <!DOCTYPE html>
 <html lang="en">
@@ -817,10 +840,10 @@
                             Run HTML/Preview
                         </button>
                     </div>
-                    
+
                     <div class="flex flex-col h-full p-2">
                         <h3 class="text-sm font-semibold text-gray-700 mb-2">Live Preview:</h3>
-                        <iframe id="html-output-${windowId}" 
+                        <iframe id="html-output-${windowId}"
                                 sandbox="allow-scripts allow-same-origin"
                                 class="w-full flex-grow border border-gray-400 rounded-lg bg-white"></iframe>
                     </div>
@@ -832,8 +855,8 @@
             const codeEl = document.getElementById(`html-code-${windowId}`);
             const outputIframe = document.getElementById(`html-output-${windowId}`);
             const userCode = codeEl.value;
-            
-            // Set the iframe's content directly using srcdoc. 
+
+            // Set the iframe's content directly using srcdoc.
             // The sandbox attribute in the iframe tag ensures safety.
             outputIframe.srcdoc = userCode;
         }
