@@ -136,7 +136,7 @@
 
             <div id="icon-retro" ondblclick="openApp('retro')" class="desktop-icon top-[110px] left-4">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" alt="Retro 98 Icon" class="w-12 h-12">
-                <span class="text-white text-xs text-center mt-1 icon-label">Retro</span>
+                <span class="text-white text-xs text-center mt-1 icon-label">Retro XP</span>
             </div>
 
             <div id="icon-calculator" ondblclick="openApp('calculator')" class="desktop-icon top-[216px] left-4">
@@ -146,7 +146,7 @@
 
             <div id="icon-chrome" ondblclick="openApp('chrome')" class="desktop-icon top-[322px] left-4">
                 <img src="https://cdn.worldvectorlogo.com/logos/minecraft-1.svg" alt="Chrome Icon" class="w-12 h-12">
-                <span class="text-white text-xs text-center mt-1 icon-label">Minecraft 1.5.2</span>
+                <span class="text-white text-xs text-center mt-1 icon-label">MC 1.5.2</span>
             </div>
 
             <div id="icon-jsrunner" ondblclick="openApp('jsrunner')" class="desktop-icon top-[428px] left-4">
@@ -157,6 +157,11 @@
              <div id="icon-htmlrunner" ondblclick="openApp('htmlrunner')" class="desktop-icon top-4 left-[116px]">
                 <svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 8h-4m-4 0h4m-4 4h4m-4 0h4" opacity="0.5"></path></svg>
                 <span class="text-white text-xs text-center mt-1 icon-label">HTML Editor</span>
+            </div>
+
+            <div id="icon-mc188" ondblclick="openApp('mc188')" class="desktop-icon top-[110px] left-[116px]">
+                <img src="https://cdn.worldvectorlogo.com/logos/minecraft-1.svg" alt="MC 1.8.8 Icon" class="w-12 h-12">
+                <span class="text-white text-xs text-center mt-1 icon-label">MC 1.8.8</span>
             </div>
         </div>
 
@@ -209,8 +214,8 @@
             </div>
 
             <div onclick="openApp('chrome'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <img src="https://cdn.worldvectorlogo.com/logos/chrome.svg" class="w-12 h-12">
-                <span class="text-xs mt-1">Chrome</span>
+                <img src="https://cdn.worldvectorlogo.com/logos/minecraft-1.svg" class="w-12 h-12">
+                <span class="text-xs mt-1">MC 1.5.2</span>
             </div>
 
             <div onclick="openApp('jsrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
@@ -221,6 +226,11 @@
             <div onclick="openApp('htmlrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-xs mt-1">HTML Editor</span>
+            </div>
+            
+            <div onclick="openApp('mc188'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
+                <img src="https://cdn.worldvectorlogo.com/logos/minecraft-1.svg" class="w-12 h-12">
+                <span class="text-xs mt-1">MC 1.8.8</span>
             </div>
         </div>
     </div>
@@ -399,8 +409,8 @@
                     defaultSize = 'w-80 h-auto'; // Fixed size for calculator
                     break;
                 case 'chrome':
-                    title = 'Chrome';
-                    iconSrc = 'https://cdn.worldvectorlogo.com/logos/chrome.svg';
+                    title = 'MC 1.5.2'; // Title bar fix
+                    iconSrc = 'https://cdn.worldvectorlogo.com/logos/minecraft-1.svg'; // Taskbar icon fix
 
                     contentHtml = `
                         <div class="w-full h-full flex flex-col">
@@ -429,6 +439,25 @@
                     iconSrc = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNMTQgMTBIMTBtLTQgMGgyMCIgLz48cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik03IDhsLTQgNGw0IDRNMTcgOGw0IDRsLTQgNG00LTRoLTYiIC8+PC9zdmc+'; // Simplified bracket icon
                     contentHtml = createHTMLRunnerHTML(windowId);
                     defaultSize = 'w-5/6 max-w-4xl h-5/6';
+                    break;
+                
+                case 'mc188':
+                    title = 'MC 1.8.8';
+                    iconSrc = 'https://cdn.worldvectorlogo.com/logos/minecraft-1.svg'; // Use the Minecraft icon for the taskbar
+                    contentHtml = `
+                        <div class="w-full h-full flex flex-col">
+                            <div class="p-2 bg-gray-100 border-b flex items-center gap-2">
+                                <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                                <input type="text" value="about:blank" onkeydown="event.stopPropagation()" class="w-full bg-white border rounded-full px-3 py-1 text-sm">
+                            </div>
+                            <iframe
+                                src="https://eaglercraft.mywire.org/EaglercraftX_1.8_u53_Offline_Signed.html"
+                                class="w-full h-full flex-grow"
+                                sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-top-navigation allow-modals"
+                                allow="fullscreen; pointer-lock"
+                            ></iframe>
+                        </div>`;
+                    defaultSize = 'w-5/6 max-w-2xl h-3/4'; // Adjusted size for placeholder
                     break;
             }
 
@@ -865,4 +894,3 @@
 
 </body>
 </html>
-
