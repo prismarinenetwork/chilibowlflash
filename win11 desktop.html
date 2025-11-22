@@ -1,14 +1,10 @@
-<!--This whole file was vibe coded lmao-->
-<!--Gotta love gemini 3 (BEST AI IN THE WORLD)-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows 11 Desktop</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -28,7 +24,7 @@
         
         /* The main desktop container */
         #desktop {
-            background-image: url('https://wallpapercave.com/wp/wp8301183.jpg');
+            background-image: url('https://wallpapercave.com/wp/wp15039692.webp');
             background-size: cover;
             background-position: center;
         }
@@ -107,91 +103,65 @@
 </head>
 <body class="w-screen h-screen overflow-hidden" onload="initDesktop()">
 
-    <!-- 1. The Desktop -->
     <div id="desktop" class="w-full h-full relative">
 
-        <!-- 1a. Desktop Icons -->
-        <!-- Icons are now manually positioned and draggable -->
         <div id="desktop-icons" class="relative">
             
-            <!-- MS Word Icon -->
             <div id="icon-word" ondblclick="openApp('word')" class="desktop-icon top-4 left-4">
-                <!-- Updated icon URL -->
                 <img src="https://cdn.worldvectorlogo.com/logos/word-1.svg" alt="Word Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Word</span>
             </div>
             
-            <!-- Retro 98 Icon (Replaces Paint) -->
             <div id="icon-retro" ondblclick="openApp('retro')" class="desktop-icon top-[110px] left-4">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" alt="Retro 98 Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Retro</span>
             </div>
 
-            <!-- Calculator Icon -->
             <div id="icon-calculator" ondblclick="openApp('calculator')" class="desktop-icon top-[216px] left-4">
-                <!-- Updated icon URL -->
                 <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" alt="Calculator Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Calculator</span>
             </div>
 
-            <!-- Chrome Icon -->
             <div id="icon-chrome" ondblclick="openApp('chrome')" class="desktop-icon top-[322px] left-4">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" alt="Chrome Icon" class="w-12 h-12">
+                <img src="https://cdn.worldvectorlogo.com/logos/chrome.svg" alt="Chrome Icon" class="w-12 h-12">
                 <span class="text-white text-xs text-center mt-1 icon-label">Chrome</span>
             </div>
 
-            <!-- JS Runner Icon (NEW) -->
             <div id="icon-jsrunner" ondblclick="openApp('jsrunner')" class="desktop-icon top-[428px] left-4">
-                <!-- Inline SVG for the code icon -->
                 <svg class="w-12 h-12 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-white text-xs text-center mt-1 icon-label">JS Runner</span>
             </div>
             
-             <!-- HTML Editor Icon (NEW) -->
-            <div id="icon-htmlrunner" ondblclick="openApp('htmlrunner')" class="desktop-icon top-4 left-[116px]">
-                <!-- Inline SVG for the HTML icon (</>) -->
+             <div id="icon-htmlrunner" ondblclick="openApp('htmlrunner')" class="desktop-icon top-4 left-[116px]">
                 <svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 8h-4m-4 0h4m-4 4h4m-4 0h4" opacity="0.5"></path></svg>
                 <span class="text-white text-xs text-center mt-1 icon-label">HTML Editor</span>
             </div>
         </div>
 
-        <!-- 1b. App Windows Container -->
         <div id="app-windows-container" class="absolute inset-0">
-            <!-- App windows will be dynamically added here -->
-        </div>
+            </div>
 
     </div>
 
-    <!-- 2. The Taskbar -->
-    <!-- Added z-30 to ensure the taskbar is on a clickable layer -->
     <div id="taskbar" class="absolute bottom-0 left-0 right-0 h-14 bg-white/70 backdrop-blur-md flex items-center justify-between px-4 shadow-t-lg z-30">
-        <!-- Left Aligned Stuff (empty for now) -->
         <div></div>
         
-        <!-- Centered Icons -->
         <div class="flex items-center gap-3">
-            <!-- Start Button -->
             <button onclick="toggleStartMenu()" class="w-10 h-10 rounded-md hover:bg-white/50 flex items-center justify-center transition-colors">
-                <!-- Updated icon URL -->
                 <img src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg" alt="Start" class="w-6 h-6">
             </button>
             
-            <!-- Container for running apps -->
             <div id="running-apps" class="flex items-center gap-2">
-                <!-- Running app icons will be dynamically added here -->
-            </div>
+                </div>
         </div>
         
-        <!-- Right Aligned Clock -->
         <div id="clock" class="text-xs text-gray-800 text-right">
             <div>12:00 PM</div>
             <div>11/21/2025</div>
         </div>
     </div>
 
-    <!-- 3. The Start Menu -->
     <div id="start-menu" class="absolute bottom-16 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[600px] bg-white/80 backdrop-blur-lg rounded-lg shadow-2xl p-6 hidden transition-all z-40">
-        <!-- Search Bar -->
         <div class="relative mb-6">
             <input type="text" placeholder="Search" class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400">
             <svg class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -199,50 +169,40 @@
             </svg>
         </div>
         
-        <!-- Pinned Apps -->
         <h2 class="text-lg font-semibold mb-3">Pinned</h2>
         <div class="grid grid-cols-6 gap-4">
-            <!-- Word -->
             <div onclick="openApp('word'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://cdn.worldvectorlogo.com/logos/microsoft-word-2013-2019.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Word</span>
             </div>
             
-            <!-- Retro -->
             <div onclick="openApp('retro'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://win98icons.alexmeub.com/icons/png/computer-3.png" class="w-12 h-12">
                 <span class="text-xs mt-1">Retro</span>
             </div>
             
-            <!-- Calculator -->
             <div onclick="openApp('calculator'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
                 <img src="https://cdn.worldvectorlogo.com/logos/windows-calculator.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Calculator</span>
             </div>
 
-            <!-- Chrome -->
             <div onclick="openApp('chrome'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg" class="w-12 h-12">
+                <img src="https://cdn.worldvectorlogo.com/logos/chrome.svg" class="w-12 h-12">
                 <span class="text-xs mt-1">Chrome</span>
             </div>
 
-            <!-- JS Runner (NEW) -->
             <div onclick="openApp('jsrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <!-- Inline SVG is rendered as an image source in the taskbar/start menu -->
                 <svg class="w-12 h-12 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-xs mt-1">JS Runner</span>
             </div>
             
-            <!-- HTML Editor (NEW) -->
             <div onclick="openApp('htmlrunner'); toggleStartMenu();" class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-200/50 cursor-pointer">
-                <!-- Inline SVG for the HTML icon (</>) -->
                 <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                 <span class="text-xs mt-1">HTML Editor</span>
             </div>
         </div>
     </div>
 
-    <!-- Main Desktop & App Logic -->
     <script>
         let zIndexCounter = 10;
         let calcState = {
@@ -251,6 +211,88 @@
             operator: null,
             waitingForSecondVal: false,
         };
+        
+        // --- Icon Snapping and Collision Check Logic (REUSABLE) ---
+        function snapIconToGrid(element, isInitial = false) {
+            const GRID_SIZE = 106; // Width/Height of the grid cell
+            
+            // 1. Ensure the icon is absolutely positioned before calculating
+            if (element.style.position !== 'absolute') {
+                const rect = element.getBoundingClientRect();
+                const desktopRect = document.getElementById('desktop').getBoundingClientRect();
+                element.style.position = 'absolute';
+                
+                // If this is the initial setup, use the current relative position as the starting point.
+                let startTop = isInitial ? (rect.top - desktopRect.top) : element.offsetTop;
+                let startLeft = isInitial ? (rect.left - desktopRect.left) : element.offsetLeft;
+
+                element.style.top = `${startTop}px`;
+                element.style.left = `${startLeft}px`;
+            }
+
+            let currentTop = element.offsetTop;
+            let currentLeft = element.offsetLeft;
+
+            // Calculate Snapped Position
+            let snappedTop = Math.round(currentTop / GRID_SIZE) * GRID_SIZE;
+            let snappedLeft = Math.round(currentLeft / GRID_SIZE) * GRID_SIZE;
+
+            // Enforce Bounds Check (Keep on screen)
+            const taskbarHeight = document.getElementById('taskbar').offsetHeight;
+            const desktopHeight = document.getElementById('desktop').clientHeight;
+            const desktopWidth = document.getElementById('desktop').clientWidth;
+
+            const maxTop = desktopHeight - element.offsetHeight - taskbarHeight - 5; // -5 for a little margin
+            const maxLeft = desktopWidth - element.offsetWidth - 5;
+            const minPos = 0;
+
+            snappedTop = Math.max(minPos, Math.min(snappedTop, maxTop));
+            snappedLeft = Math.max(minPos, Math.min(snappedLeft, maxLeft));
+
+            // Collision Detection
+            const allIcons = document.getElementById('desktop-icons').children;
+            let collisionDetected = true;
+            let maxIterations = 50; 
+
+            // Try to find a free position by shifting down one grid cell at a time
+            while (collisionDetected && maxIterations > 0) {
+                collisionDetected = false;
+                for (let i = 0; i < allIcons.length; i++) {
+                    const otherIcon = allIcons[i];
+                    // Skip self and non-icon elements
+                    if (otherIcon === element || !otherIcon.classList.contains('desktop-icon')) continue;
+                    
+                    // Skip icons that haven't been made absolute yet (only relevant during initial run)
+                    if (otherIcon.style.position !== 'absolute' && isInitial) continue; 
+
+                    const otherTop = otherIcon.offsetTop;
+                    const otherLeft = otherIcon.offsetLeft;
+
+                    if (snappedTop === otherTop && snappedLeft === otherLeft) {
+                        // Collision detected! Shift the snapped position down by one grid cell
+                        snappedTop += GRID_SIZE; 
+                        
+                        // Re-apply bounds check after shifting
+                        snappedTop = Math.min(snappedTop, maxTop);
+                        
+                        // If we shifted and hit the boundary, and collision still exists, stop.
+                        if (snappedTop === maxTop && maxTop === otherTop) {
+                            collisionDetected = false; 
+                            break; 
+                        }
+                        
+                        // Set flag to re-run the check against all icons with the new snappedTop
+                        collisionDetected = true; 
+                        break; 
+                    }
+                }
+                maxIterations--;
+            }
+
+            // Apply Final Snapped Position
+            element.style.top = `${snappedTop}px`;
+            element.style.left = `${snappedLeft}px`;
+        }
 
         // --- Desktop Initialization ---
         function initDesktop() {
@@ -269,11 +311,15 @@
                 }
             });
             
-            // Make desktop icons draggable
+            // Make desktop icons draggable AND snap them to the grid immediately
             const desktopIcons = document.getElementById('desktop-icons').children;
             for (let i = 0; i < desktopIcons.length; i++) {
                 // Ensure we only apply dragging to actual icon elements
                 if (desktopIcons[i].classList.contains('desktop-icon')) {
+                    // 1. Snap to grid first to correct initial position and apply absolute positioning
+                    snapIconToGrid(desktopIcons[i], true); // true indicates initial setup
+                    
+                    // 2. Then make them draggable
                     makeIconDraggable(desktopIcons[i]);
                 }
             }
@@ -332,15 +378,20 @@
                     break;
                 case 'chrome':
                     title = 'Chrome';
-                    iconSrc = 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg';
-                    // A simple browser "chrome" framing Wikipedia
+                    iconSrc = 'https://cdn.worldvectorlogo.com/logos/chrome.svg';
+                   
                     contentHtml = `
                         <div class="w-full h-full flex flex-col">
                             <div class="p-2 bg-gray-100 border-b flex items-center gap-2">
                                 <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-                                <input type="text" readonly value="https://www.wikipedia.org" class="w-full bg-white border rounded-full px-3 py-1 text-sm">
+                                <input type="text" value="about:blank" onkeydown="event.stopPropagation()" class="w-full bg-white border rounded-full px-3 py-1 text-sm">
                             </div>
-                            <iframe src="https://www.wikipedia.org" class="w-full h-full flex-grow"></iframe>
+                            <iframe 
+                                src="https://eaglercraft.mywire.org/diablo.html" 
+                                class="w-full h-full flex-grow"
+                                sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-top-navigation allow-modals"
+                                allow="fullscreen; pointer-lock"
+                            ></iframe>
                         </div>`;
                     break;
                 case 'jsrunner':
@@ -371,19 +422,14 @@
             windowEl.style.zIndex = ++zIndexCounter;
             
             windowEl.innerHTML = `
-                <!-- Title Bar -->
                 <div class="title-bar h-8 bg-gray-100 flex justify-between items-center px-3 rounded-t-lg border-b">
                     <span class="text-sm font-semibold text-gray-700">${title}</span>
                     <div class="flex items-center gap-2">
-                        <!-- Minimize -->
                         <button onclick="minimizeWindow('${windowId}')" class="w-5 h-5 rounded-full bg-yellow-400 hover:bg-yellow-500"></button>
-                        <!-- Maximize -->
                         <button onclick="maximizeWindow('${windowId}')" class="w-5 h-5 rounded-full bg-green-400 hover:bg-green-500"></button>
-                        <!-- Close -->
                         <button onclick="closeApp('${appName}')" class="w-5 h-5 rounded-full bg-red-500 hover:bg-red-600"></button>
                     </div>
                 </div>
-                <!-- Window Content -->
                 <div class="window-content flex-grow relative ${appName === 'calculator' ? 'p-2 bg-gray-100' : ''}">
                     ${contentHtml}
                 </div>
@@ -503,28 +549,29 @@
                 // Stop moving when mouse button is released:
                 document.onmouseup = null;
                 document.onmousemove = null;
+
+                // --- FIX: Force focus back to iframe content after drag finishes ---
+                const iframe = element.querySelector('iframe');
+                if (iframe) {
+                    iframe.focus();
+                }
             }
         }
         
         // --- Icon Dragging Logic (For Desktop Icons) ---
         function makeIconDraggable(element) {
             let pos3 = 0, pos4 = 0; // Mouse start position
-            
-            // Set position absolute relative to its container to enable dragging
-            // This is done on first mousedown to calculate current position correctly
+
             element.onmousedown = dragMouseDown;
 
             function dragMouseDown(e) {
                 e = e || window.event;
                 
-                // Check if the element is not already positioned absolutely.
-                // If it's relative, we need to convert its current visual position 
-                // to absolute coordinates based on its parent.
+                // Convert position to absolute on first drag (this is now handled by initDesktop, but kept as a fallback/safety)
                 if (element.style.position !== 'absolute') {
                     const rect = element.getBoundingClientRect();
                     const desktopRect = document.getElementById('desktop').getBoundingClientRect();
                     element.style.position = 'absolute';
-                    // Calculate position relative to the desktop container
                     element.style.top = `${rect.top - desktopRect.top}px`;
                     element.style.left = `${rect.left - desktopRect.left}px`;
                 }
@@ -536,7 +583,6 @@
                 document.onmouseup = closeDragElement;
                 document.onmousemove = elementDrag;
                 
-                // Prevent default drag (like image drag) but allow double click propagation
                 e.preventDefault(); 
             }
 
@@ -549,23 +595,22 @@
                 pos3 = e.clientX;
                 pos4 = e.clientY;
                 
-                // Set the element's new position:
+                // Set the element's new position (temporary, before snapping):
                 let newTop = (element.offsetTop - pos2);
                 let newLeft = (element.offsetLeft - pos1);
                 
-                // Basic bounds check (prevent icon from going under taskbar or too far left/up)
-                const minTop = 0;
-                const minLeft = 0;
-                const maxTop = document.getElementById('desktop').clientHeight - element.offsetHeight - document.getElementById('taskbar').offsetHeight;
-                const maxLeft = document.getElementById('desktop').clientWidth - element.offsetWidth;
-                
-                element.style.top = `${Math.max(minTop, Math.min(newTop, maxTop))}px`;
-                element.style.left = `${Math.max(minLeft, Math.min(newLeft, maxLeft))}px`;
+                // Set the temporary position immediately for smooth dragging
+                element.style.top = `${newTop}px`;
+                element.style.left = `${newLeft}px`;
             }
 
             function closeDragElement() {
+                // Stop moving when mouse button is released:
                 document.onmouseup = null;
                 document.onmousemove = null;
+
+                // Call the unified snap function to handle snapping, bounds, and collision
+                snapIconToGrid(element, false);
             }
         }
 
@@ -674,17 +719,14 @@
                 <div class="p-4 flex flex-col h-full space-y-3 bg-gray-50 overflow-hidden">
                     <h3 class="text-sm font-semibold text-gray-700">Input JavaScript code in here to be ran:</h3>
                     
-                    <!-- Code Input Area -->
                     <textarea id="js-code-${windowId}" 
                               class="w-full h-1/2 p-3 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 resize-none shadow-inner" 
                               placeholder="Example: console.log(2 + 2);&#10;let x = 'Runner';&#10;return 'JS ' + x;"></textarea>
                     
-                    <!-- Execute Button -->
                     <button onclick="executeJSRunnerCode('${windowId}')" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-150 font-bold shadow-md">
                         Execute !
                     </button>
                     
-                    <!-- Output Console Area -->
                     <div class="flex-grow flex flex-col border border-gray-400 rounded-lg p-3 bg-gray-800 overflow-y-auto">
                         <h3 class="text-sm font-medium text-green-400 mb-1 border-b border-green-500/20 pb-1">Output Console:</h3>
                         <pre id="js-output-${windowId}" class="text-xs text-white whitespace-pre-wrap flex-grow font-mono leading-relaxed"></pre>
@@ -752,7 +794,6 @@
         function createHTMLRunnerHTML(windowId) {
             return `
                 <div class="grid grid-cols-2 h-full bg-gray-50 overflow-hidden divide-x divide-gray-200">
-                    <!-- Input Panel -->
                     <div class="flex flex-col h-full p-2 space-y-2">
                         <h3 class="text-sm font-semibold text-gray-700">Code (HTML/CSS/JS):</h3>
                         <textarea id="html-code-${windowId}" 
@@ -777,7 +818,6 @@
                         </button>
                     </div>
                     
-                    <!-- Output Panel -->
                     <div class="flex flex-col h-full p-2">
                         <h3 class="text-sm font-semibold text-gray-700 mb-2">Live Preview:</h3>
                         <iframe id="html-output-${windowId}" 
